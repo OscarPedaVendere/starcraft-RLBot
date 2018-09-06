@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2E63AE74-758A-4607-9DE4-D28E814A6E13}</ProjectGuid>
+    <RootNamespace>ExampleAIModule</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <PreLinkEvent />
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>../lib/BWAPId.lib;../lib/libboost_serialization-vc141-mt-gd-x32-1_67.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+    </Link>
+    <PostBuildEvent>
+      <Command>cp "$(SolutionDir)Debug\$(ProjectName)d.dll" "D:\PC\Starcraft_bwapi\bwapi-data\AI\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>../include;../src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;NDEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <PreLinkEvent />
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>../lib/BWAPI.lib;../lib/libboost_serialization-vc141-mt-x32-1_67.lib;../lib/libboost_serialization-vc141-mt-gd-x32-1_67.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>cp "$(SolutionDir)Release\$(ProjectName).dll" "D:\PC\Starcraft_bwapi\bwapi-data\AI\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\BWEM\EasyBMP_1.06\EasyBMP.cpp" />
+    <ClCompile Include="Source\BWEM\src\area.cpp" />
+    <ClCompile Include="Source\BWEM\src\base.cpp" />
+    <ClCompile Include="Source\BWEM\src\bwapiExt.cpp" />
+    <ClCompile Include="Source\BWEM\src\bwem.cpp" />
+    <ClCompile Include="Source\BWEM\src\cp.cpp" />
+    <ClCompile Include="Source\BWEM\src\examples.cpp" />
+    <ClCompile Include="Source\BWEM\src\exampleWall.cpp" />
+    <ClCompile Include="Source\BWEM\src\graph.cpp" />
+    <ClCompile Include="Source\BWEM\src\gridMap.cpp" />
+    <ClCompile Include="Source\BWEM\src\map.cpp" />
+    <ClCompile Include="Source\BWEM\src\mapDrawer.cpp" />
+    <ClCompile Include="Source\BWEM\src\mapImpl.cpp" />
+    <ClCompile Include="Source\BWEM\src\mapPrinter.cpp" />
+    <ClCompile Include="Source\BWEM\src\neutral.cpp" />
+    <ClCompile Include="Source\BWEM\src\tiles.cpp" />
+    <ClCompile Include="Source\BWEM\src\utils.cpp" />
+    <ClCompile Include="Source\BWEM\src\winutils.cpp" />
+    <ClCompile Include="Source\Dll.cpp" />
+    <ClCompile Include="Source\ExampleAIModule.cpp" />
+    <ClCompile Include="Source\RLEnvironment.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\BWEM\EasyBMP_1.06\EasyBMP.h" />
+    <ClInclude Include="Source\BWEM\src\area.h" />
+    <ClInclude Include="Source\BWEM\src\base.h" />
+    <ClInclude Include="Source\BWEM\src\bwapiExt.h" />
+    <ClInclude Include="Source\BWEM\src\bwem.h" />
+    <ClInclude Include="Source\BWEM\src\cp.h" />
+    <ClInclude Include="Source\BWEM\src\defs.h" />
+    <ClInclude Include="Source\BWEM\src\examples.h" />
+    <ClInclude Include="Source\BWEM\src\exampleWall.h" />
+    <ClInclude Include="Source\BWEM\src\graph.h" />
+    <ClInclude Include="Source\BWEM\src\gridMap.h" />
+    <ClInclude Include="Source\BWEM\src\map.h" />
+    <ClInclude Include="Source\BWEM\src\mapDrawer.h" />
+    <ClInclude Include="Source\BWEM\src\mapImpl.h" />
+    <ClInclude Include="Source\BWEM\src\mapPrinter.h" />
+    <ClInclude Include="Source\BWEM\src\neutral.h" />
+    <ClInclude Include="Source\BWEM\src\tiles.h" />
+    <ClInclude Include="Source\BWEM\src\utils.h" />
+    <ClInclude Include="Source\BWEM\src\winutils.h" />
+    <ClInclude Include="Source\ExampleAIModule.h" />
+    <ClInclude Include="Source\RLEnvironment.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
