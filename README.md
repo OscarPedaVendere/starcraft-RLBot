@@ -39,12 +39,12 @@ Although you can find any version of Boost Libraries online on the official site
 So if you download the whole project and overwrite the include folder you should be ready to go.
 
 
-### Configuring: RELEASE and DEBUG targets
+## Configuring: RELEASE and DEBUG targets
 
-## RELEASE target
+### RELEASE target
 The default target is Release (Win32) that is the main target you want to have as you commit changes in your project.
 
-## DEBUG target
+### DEBUG target
 The Debug target can be used but debugging in BWAPI is not straightforward as it could seem.
 To know how to debug in BWAPI refer to the official wiki:
 https://github.com/calebthompson/bwapi/blob/master/wiki/Debugging.wiki
