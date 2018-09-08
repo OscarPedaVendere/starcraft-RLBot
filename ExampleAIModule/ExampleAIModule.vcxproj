@@ -58,6 +58,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <PreLinkEvent />
     <Link>
@@ -102,48 +103,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\BWEM\EasyBMP_1.06\EasyBMP.cpp" />
-    <ClCompile Include="Source\BWEM\src\area.cpp" />
-    <ClCompile Include="Source\BWEM\src\base.cpp" />
-    <ClCompile Include="Source\BWEM\src\bwapiExt.cpp" />
-    <ClCompile Include="Source\BWEM\src\bwem.cpp" />
-    <ClCompile Include="Source\BWEM\src\cp.cpp" />
-    <ClCompile Include="Source\BWEM\src\examples.cpp" />
-    <ClCompile Include="Source\BWEM\src\exampleWall.cpp" />
-    <ClCompile Include="Source\BWEM\src\graph.cpp" />
-    <ClCompile Include="Source\BWEM\src\gridMap.cpp" />
-    <ClCompile Include="Source\BWEM\src\map.cpp" />
-    <ClCompile Include="Source\BWEM\src\mapDrawer.cpp" />
-    <ClCompile Include="Source\BWEM\src\mapImpl.cpp" />
-    <ClCompile Include="Source\BWEM\src\mapPrinter.cpp" />
-    <ClCompile Include="Source\BWEM\src\neutral.cpp" />
-    <ClCompile Include="Source\BWEM\src\tiles.cpp" />
-    <ClCompile Include="Source\BWEM\src\utils.cpp" />
-    <ClCompile Include="Source\BWEM\src\winutils.cpp" />
     <ClCompile Include="Source\Dll.cpp" />
     <ClCompile Include="Source\ExampleAIModule.cpp" />
     <ClCompile Include="Source\RLEnvironment.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\BWEM\EasyBMP_1.06\EasyBMP.h" />
-    <ClInclude Include="Source\BWEM\src\area.h" />
-    <ClInclude Include="Source\BWEM\src\base.h" />
-    <ClInclude Include="Source\BWEM\src\bwapiExt.h" />
-    <ClInclude Include="Source\BWEM\src\bwem.h" />
-    <ClInclude Include="Source\BWEM\src\cp.h" />
-    <ClInclude Include="Source\BWEM\src\defs.h" />
-    <ClInclude Include="Source\BWEM\src\examples.h" />
-    <ClInclude Include="Source\BWEM\src\exampleWall.h" />
-    <ClInclude Include="Source\BWEM\src\graph.h" />
-    <ClInclude Include="Source\BWEM\src\gridMap.h" />
-    <ClInclude Include="Source\BWEM\src\map.h" />
-    <ClInclude Include="Source\BWEM\src\mapDrawer.h" />
-    <ClInclude Include="Source\BWEM\src\mapImpl.h" />
-    <ClInclude Include="Source\BWEM\src\mapPrinter.h" />
-    <ClInclude Include="Source\BWEM\src\neutral.h" />
-    <ClInclude Include="Source\BWEM\src\tiles.h" />
-    <ClInclude Include="Source\BWEM\src\utils.h" />
-    <ClInclude Include="Source\BWEM\src\winutils.h" />
     <ClInclude Include="Source\ExampleAIModule.h" />
     <ClInclude Include="Source\RLEnvironment.h" />
   </ItemGroup>

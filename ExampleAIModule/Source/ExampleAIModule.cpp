@@ -1,5 +1,5 @@
 #include "ExampleAIModule.h"
-#include "BWEM\src\bwem.h"
+//#include "BWEM\src\bwem.h"
 #include <iostream>
 #include "RLEnvironment.h"
 
@@ -7,12 +7,11 @@
 using namespace BWAPI;
 using namespace Filter;
 using namespace std;
-using namespace BWEM;
-using namespace BWEM::BWAPI_ext;
-using namespace BWEM::utils;
+//using namespace BWEM;
+//using namespace BWEM::BWAPI_ext;
+//using namespace BWEM::utils;
 
-
-namespace { auto & theMap = BWEM::Map::Instance(); }
+//namespace { auto & theMap = BWEM::Map::Instance(); }
 
 bool analyzed;
 bool analysis_just_finished;
@@ -293,7 +292,7 @@ void ExampleAIModule::onSendText(std::string text)
 {
 	// BWEM utils comand processor.
 	// In MapDrawer::ProcessCommand you will find all the available items you can control.
-	BWEM::utils::MapDrawer::ProcessCommand(text);
+	//BWEM::utils::MapDrawer::ProcessCommand(text);
 
 	// Send the text to the game if it is not being processed.
 	Broodwar->sendText("%s", text.c_str());
@@ -371,8 +370,8 @@ void ExampleAIModule::onUnitDestroy(BWAPI::Unit unit)
 		if (unit->getID() != agentRef->getID())
 			agentRef->incrementKills();
 		// BWEM events handler for minerals and special buildings
-		if (unit->getType().isMineralField())    theMap.OnMineralDestroyed(unit);
-		else if (unit->getType().isSpecialBuilding()) theMap.OnStaticBuildingDestroyed(unit);
+		//if (unit->getType().isMineralField())    theMap.OnMineralDestroyed(unit);
+		//else if (unit->getType().isSpecialBuilding()) theMap.OnStaticBuildingDestroyed(unit);
 	}
 	catch (const std::exception & e)
 	{

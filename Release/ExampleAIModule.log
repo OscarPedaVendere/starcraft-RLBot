@@ -1,0 +1,7 @@
+﻿     Creating library Release\ExampleAIModule.lib and object Release\ExampleAIModule.exp
+ExampleAIModule.obj : error LNK2001: unresolved external symbol "void __cdecl BWEM::utils::pathExample(class BWEM::Map const &)" (?pathExample@utils@BWEM@@YAXABVMap@2@@Z)
+ExampleAIModule.obj : error LNK2001: unresolved external symbol "public: static bool __cdecl BWEM::utils::MapDrawer::ProcessCommand(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?ProcessCommand@MapDrawer@utils@BWEM@@SA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+ExampleAIModule.obj : error LNK2001: unresolved external symbol "void __cdecl BWEM::utils::printMap(class BWEM::Map const &)" (?printMap@utils@BWEM@@YAXABVMap@2@@Z)
+ExampleAIModule.obj : error LNK2001: unresolved external symbol "public: static void __cdecl BWEM::utils::MapPrinter::Initialize(class BWEM::Map const *)" (?Initialize@MapPrinter@utils@BWEM@@SAXPBVMap@3@@Z)
+ExampleAIModule.obj : error LNK2001: unresolved external symbol "public: static class BWEM::Map & __cdecl BWEM::Map::Instance(void)" (?Instance@Map@BWEM@@SAAAV12@XZ)
+C:\Program Files (x86)\BWAPI\Release\ExampleAIModule.dll : fatal error LNK1120: 5 unresolved externals

@@ -1,5 +1,11 @@
-﻿  RLEnvironment.cpp
-Source\RLEnvironment.cpp(267): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+﻿  Dll.cpp
+  ExampleAIModule.cpp
+  RLEnvironment.cpp
+Source\RLEnvironment.cpp(239): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+Source\RLEnvironment.cpp(244): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+Source\RLEnvironment.cpp(249): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+Source\RLEnvironment.cpp(254): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+Source\RLEnvironment.cpp(288): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\time.h(505): note: see declaration of 'localtime'
      Creating library Debug\ExampleAIModuled.lib and object Debug\ExampleAIModuled.exp
   ExampleAIModule.vcxproj -> C:\Program Files (x86)\BWAPI\Debug\ExampleAIModuled.dll

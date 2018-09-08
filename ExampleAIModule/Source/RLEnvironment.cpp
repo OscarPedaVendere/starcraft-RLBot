@@ -2,13 +2,13 @@
 #include <iostream>
 #include <fstream>
 #include <BWAPI.h>
-#include "BWEM\src\bwem.h"
+//#include "BWEM\src\bwem.h"
 #include <list>
 #include <boost\serialization\list.hpp>
 
 using namespace BWAPI;
 using namespace std;
-using namespace BWEM::utils;
+//using namespace BWEM::utils;
 //#include <stdio.h>
 
 
@@ -54,7 +54,7 @@ If it is not, update the state the environment is in, choose an action (w/ epsil
 /////////////////////////////////
 */
 
-namespace { auto & theMap = BWEM::Map::Instance(); }
+//namespace { auto & theMap = BWEM::Map::Instance(); }
 
 // Alpha and gamma parameters.
 // As written in the article are set, respectively, to .05 and .9 and epsilon to slowly decay to 0 from .9
@@ -89,20 +89,26 @@ Unit unitRef;				// The reference to the RL Agent unit. Most important one. To d
 std::list<Q>		policy;										// The policy itself
 std::list<State>	stateSpace;									// The whole state space
 map<int, int>		previousEnemyLives;							// The lives enemies had before
-map<int, Position>	lastKnownPositions;							// The positions of the enemies before known
+//map<int, int>		lastKnownDistances;							// The distances of the enemies before known
 Q*					currentQ  = NULL;							// Current Q the agent is evaluating
 Q*					previousQ = NULL;							// Previous Q: To update once reward can be calculated
 State*				currentState  = NULL;						// Current state the environment is in
 ActionType			currentAction = ActionType::NONE;			// Current action that agent is taking. If still in action
 Position			retreatTowards;								// Has agent reached the retreat position?
 Algorithm			currentAlgorithm = Algorithm::SIMPLE_SARSA;	// The Algorithm you want to use for learning
-short				numActions   = 2;							//number of possible actions the agent can make
+Unit				currentTarget;								// The target the agent is currently attacking when in FIGHT action
+int					currTargetLife;
+short				numActions   = 2;							// Number of possible actions the agent can make
 int					killsRecorded = 0;
 
 // Position calculation
-int      minDis         = 10,									// Get distances from map bounds
-         repulsiveForce = 180,
-         vectorSize     = 80;	// The size of the vector (directional)
+int	minDis					= 10,	// Get distances from map bounds
+	repulsiveForce			= 180,
+    vectorSize				= 80;	// The size of the vector (directional)
+
+double	repulsiveForceDiscount = 0.3,	// When we're approaching the borders w/ repulsive forces
+		minDisCount = 1.2;
+
 #pragma endregion
 
 #pragma region Functions
@@ -190,6 +196,8 @@ void		Agent::executeAction() {
 				s = u;
 			}
 		}
+		currTargetLife = s->getHitPoints() + s->getShields();
+		currentTarget = s;
 		unitRef->attack(s);
 	}else{
 		// Set the retreat position
@@ -221,18 +229,30 @@ void		Agent::executeAction() {
 		*/
 		//float mapHeight = Broodwar->mapHeight() * 4 - 4, mapWidth = Broodwar->mapWidth() * 4 - 20;
 
+		//TODO: Improve Retreat system: might be too slow to process
+
 		//URGENT: handle repulsive forces based on distance between agent and mindis/2 - distance from borders
 		// y
-		if ((Broodwar->mapHeight() - calc.y <= minDis)){	//|| (needRegAccess && sumReg->getBoundsTop() - calc.y <= minDis)) {	// down to up
+		if (Broodwar->mapHeight() - calc.y <= minDis){	//|| (needRegAccess && sumReg->getBoundsTop() - calc.y <= minDis)) {	// down to up
 			sum += Position(0, -repulsiveForce);
-		}else if (calc.y<= minDis ){	//|| (needRegAccess && sumReg->getBoundsBottom() - calc.y <= minDis)) {	// up to down
-			sum += Position(0, repulsiveForce);
+		}else if (Broodwar->mapHeight() - calc.y <= minDis*minDisCount) {
+			sum += Position(0, -repulsiveForce * repulsiveForceDiscount);
 		}
+		else if (calc.y <= minDis) {	//|| (needRegAccess && sumReg->getBoundsBottom() - calc.y <= minDis)) {	// up to down
+			sum += Position(0, repulsiveForce);
+		}else if (calc.y <= minDis*minDisCount) {
+			sum += Position(0, repulsiveForce * repulsiveForceDiscount);
+		}
+
 		// x
-		if ((Broodwar->mapWidth()  - calc.x <= minDis)){	//|| (needRegAccess && sumReg->getBoundsRight() - calc.x <= minDis)) {	// right to left
+		if ((Broodwar->mapWidth()  - calc.x <= minDis*minDisCount)){	//|| (needRegAccess && sumReg->getBoundsRight() - calc.x <= minDis)) {	// right to left
+			sum += Position(-repulsiveForce * repulsiveForceDiscount, 0);
+		}else if ((Broodwar->mapWidth() - calc.x <= minDis)) {
 			sum += Position(-repulsiveForce, 0);
 		}
-		else if (calc.x <= minDis ){	//|| (needRegAccess && calc.x - sumReg->getBoundsLeft() <= minDis)) {	// left to right
+		else if (calc.x <= minDis*minDisCount){	//|| (needRegAccess && calc.x - sumReg->getBoundsLeft() <= minDis)) {	// left to right
+			sum += Position(repulsiveForce * repulsiveForceDiscount, 0);
+		}else if (calc.x <= minDis) {
 			sum += Position(repulsiveForce, 0);
 		}
 
@@ -403,7 +423,7 @@ bool		Agent::isActionMeaningful() {
 
 // method responsible for telling if the agent is currently doing any action
 // a (timeoutCall) timer is decremented any time the agent has not finished doing his action previously selected.
-// if the timer reaches 0 isDoinAction() returns false and a new RL timeframe is called
+// if the timer reaches 0 isDoingAction() returns false and a new RL timeframe is called
 bool		Agent::isDoingAction() {
 	// Used to see frames remaining for timeout
 	Broodwar->drawTextScreen(400, 0, "timeoutFrames: %d", timeoutCall);
@@ -414,7 +434,9 @@ bool		Agent::isDoingAction() {
 	}
 	else if (currentAction == ActionType::FIGHT) {
 		if(timeoutCall>0) timeoutCall--;	// This works as if the agent doesn't end its action in time, we "free" the agent so as to continue
-		if (unitRef->isAttackFrame()) return true;
+		if (currentTarget != NULL && currentTarget->getHitPoints() + currentTarget->getShields() == currTargetLife) return true;
+		return false;
+		
 	}else {
 		if (timeoutCall>0) timeoutCall--;
 		//Print retreat path to screen
@@ -484,13 +506,13 @@ void		Agent::updateQValues() {
 					if (u->exists()) {
 						reward += it->second - u->getHitPoints() - u->getShields();
 						it->second = u->getHitPoints() + u->getShields();
-						lastKnownPositions[it->first] = u->getPosition();
+						//lastKnownDistances[it->first] = unitRef->getDistance(u);
 					}
 					else {	// Else means: 1) it has been killed by us. 2) is not in the current player's view so
-										// this is to ensure that we actually killed it
+										// this is to ensure that we actually killed it and it didn't only disappear from the view of the player
+						//ToDeepen: this could cause errors if two or more units disappear from screen with lower health than the agent's firing power in the meanwhile that the agent killed another unit
 						if (unitRef->getKillCount() > killsRecorded &&
-							it->second <= unitRef->getType().groundWeapon().damageAmount() &&
-							unitRef->getDistance(lastKnownPositions[it->first]) <= unitRef->getType().groundWeapon().maxRange()) {
+							it->second <= unitRef->getType().groundWeapon().damageAmount()) {
 							reward += it->second;
 							mustErase = true;
 							killsRecorded++;
@@ -504,7 +526,7 @@ void		Agent::updateQValues() {
 			}
 			if (mustErase) {
 				it = previousEnemyLives.erase(it);
-				lastKnownPositions.erase(it->first);
+				//lastKnownDistances.erase(it->first);
 			}
 			else {
 				++it;
@@ -519,11 +541,15 @@ void		Agent::updateQValues() {
 			previousQ->setValue(getQLearningValue(reward));
 
 		overallReward += (int)reward;
-
+		if (previousQ->getActionType() == ActionType::FIGHT) {
+			float k = reward;
+		}
 	}else {	// if there isn't, initialize them
 		for (auto &u : unitRef->getUnitsInRadius(radiusToSearch))
 			previousEnemyLives[u->getID()] = u->getHitPoints() + u->getShields();
 	}
+
+	
 
 	previousEnemyLives[unitRef->getID()] = unitRef->getHitPoints() + unitRef->getShields();
 	previousQ = currentQ;
